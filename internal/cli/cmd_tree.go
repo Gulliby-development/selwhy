@@ -10,10 +10,19 @@ import (
 )
 
 func runTree(args []string, io base.IO) (int, error) {
-	parsed, err := base.Parse(args, nil)
+	parsed, err := base.Parse(args, []base.Spec{{Name: "--depth"}})
 	if err != nil {
 		return 0, err
 	}
+
+	limit := 12
+	if values := parsed.Values["--depth"]; len(values) > 0 {
+		limit, err = parseTreeDepth(values[len(values)-1])
+		if err != nil {
+			return 0, err
+		}
+	}
+
 	if len(parsed.Args) == 0 {
 		return 0, errors.New("missing document")
 	}
@@ -32,6 +41,9 @@ func runTree(args []string, io base.IO) (int, error) {
 
 	rows := make([][]string, 0, len(doc.Elements))
 	for _, element := range doc.Elements {
+		if markup.Depth(element) > limit {
+			continue
+		}
 		rows = append(rows, []string{
 			strconv.Itoa(element.Num),
 			markup.Path(element),
@@ -40,7 +52,22 @@ func runTree(args []string, io base.IO) (int, error) {
 	}
 
 	lines := base.Table([]string{"n", "path", "tag"}, rows)
-	lines = append(lines, base.Line("elements", strconv.Itoa(len(doc.Elements))))
+	lines = append(lines, base.Line("elements", strconv.Itoa(len(rows))))
 	io.Out(strings.Join(lines, "\n") + "\n")
 	return 0, nil
+}
+
+// parseTreeDepth validates the bounded ASCII depth syntax before conversion.
+func parseTreeDepth(text string) (int, error) {
+	valid := len(text) >= 1 && len(text) <= 2 && text[0] != '0'
+	for i := 0; valid && i < len(text); i++ {
+		valid = text[i] >= '0' && text[i] <= '9'
+	}
+	if valid {
+		value, err := strconv.Atoi(text)
+		if err == nil && value >= 1 && value <= 12 {
+			return value, nil
+		}
+	}
+	return 0, errors.New("invalid --depth " + base.Show(text) + " (expected a whole number from 1 to 12)")
 }

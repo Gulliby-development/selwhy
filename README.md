@@ -25,7 +25,7 @@ go run . --help
 The command forms are:
 
 ```text
-selwhy tree DOC
+selwhy tree [--depth N] DOC
 selwhy select SELECTOR DOC
 selwhy explain SELECTOR DOC N
 selwhy specificity SELECTOR
@@ -44,7 +44,7 @@ In the examples, "$DOC1" is this document:
 
 ## Commands
 
-- `tree DOC` lists elements in document order with their paths and opening tags.
+- `tree [--depth N] DOC` lists elements in document order with their paths and opening tags; `--depth N` (1 to 12) keeps only the elements at most N levels deep, the root being level 1.
 - `select SELECTOR DOC` lists elements matched by a selector list.
 - `explain SELECTOR DOC N` reports whether each selector matches the numbered element and gives a reason for each non-match.
 - `specificity SELECTOR` lists each selector and its specificity.
@@ -63,6 +63,16 @@ n  path                 tag
 5  /div[1]/ul[1]/li[3]  [<li>]
 6  /div[1]/p[1]         [<p lang="en">]
 elements    6
+```
+
+With `--depth`, the elements keep their numbers and the `elements` row counts the rows listed. `selwhy tree --depth 2 "$DOC1"` prints:
+
+```text
+n  path           tag
+1  /div[1]        [<div id="app" class="page wide">]
+2  /div[1]/ul[1]  [<ul class="nav">]
+6  /div[1]/p[1]   [<p lang="en">]
+elements    3
 ```
 
 The first selection example is `selwhy select 'ul > li:not(.on)' "$DOC1"`:
