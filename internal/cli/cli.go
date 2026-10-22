@@ -3,7 +3,7 @@ package cli
 import "github.com/Gulliby-development/selwhy/internal/base"
 
 // Usage lists the supported commands in dispatch order.
-const Usage = "selwhy tree DOC\n" +
+const Usage = "selwhy tree [--depth N] DOC\n" +
 	"selwhy select SELECTOR DOC\n" +
 	"selwhy explain SELECTOR DOC N\n" +
 	"selwhy specificity SELECTOR\n" +

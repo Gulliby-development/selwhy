@@ -38,6 +38,15 @@ func Path(e *Element) string {
 	return path.String()
 }
 
+// Depth returns the number of elements from the root to e, both counted.
+func Depth(e *Element) int {
+	depth := 0
+	for current := e; current != nil; current = current.Parent {
+		depth++
+	}
+	return depth
+}
+
 // TagText renders e's start tag with attributes in their source order.
 func TagText(e *Element) string {
 	if e == nil {
