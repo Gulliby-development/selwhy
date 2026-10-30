@@ -73,7 +73,7 @@ func TestRunDispatch(t *testing.T) {
 			name:     "help",
 			argv:     []string{"--help"},
 			code:     0,
-			stdout:   "selwhy tree [--depth N] DOC\nselwhy select SELECTOR DOC\nselwhy explain SELECTOR DOC N\nselwhy specificity SELECTOR\nselwhy fmt SELECTOR\nselwhy nth [--count N] FORMULA\nselwhy cascade SHEET DOC\n",
+			stdout:   "selwhy tree [--depth N] DOC\nselwhy select [--limit N] SELECTOR DOC\nselwhy explain SELECTOR DOC N\nselwhy specificity SELECTOR\nselwhy fmt SELECTOR\nselwhy nth [--count N] FORMULA\nselwhy cascade SHEET DOC\n",
 			outCalls: 1,
 		},
 	}
