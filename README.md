@@ -26,7 +26,7 @@ The command forms are:
 
 ```text
 selwhy tree [--depth N] DOC
-selwhy select SELECTOR DOC
+selwhy select [--limit N] SELECTOR DOC
 selwhy explain SELECTOR DOC N
 selwhy specificity SELECTOR
 selwhy fmt SELECTOR
@@ -45,7 +45,7 @@ In the examples, "$DOC1" is this document:
 ## Commands
 
 - `tree [--depth N] DOC` lists elements in document order with their paths and opening tags; `--depth N` (1 to 12) keeps only the elements at most N levels deep, the root being level 1.
-- `select SELECTOR DOC` lists elements matched by a selector list.
+- `select [--limit N] SELECTOR DOC` lists elements matched by a selector list; `--limit N` (1 to 1000) lists only the first N of them.
 - `explain SELECTOR DOC N` reports whether each selector matches the numbered element and gives a reason for each non-match.
 - `specificity SELECTOR` lists each selector and its specificity.
 - `fmt SELECTOR` prints the canonical selector form.
@@ -83,6 +83,17 @@ n  path                 tag
 5  /div[1]/ul[1]/li[3]  [<li>]
 matches     2
 ```
+
+With `--limit`, the rows are the first N matches in document order, the `matches` row still counts every match, and a `listed` row with the number of rows printed follows it when some matches were left out. `selwhy select --limit 1 'ul > li:not(.on)' "$DOC1"` prints:
+
+```text
+n  path                 tag
+4  /div[1]/ul[1]/li[2]  [<li data-k="b-2">]
+matches     2
+listed      1
+```
+
+The exit code does not depend on `--limit`: 1 only when nothing matched.
 
 The cascade example is `selwhy cascade 'li{margin:0} /* menu */ ul > li.on{--x:2;margin:1} #app li.on{--x:3} .on{margin:4 !important}' "$DOC1"`:
 

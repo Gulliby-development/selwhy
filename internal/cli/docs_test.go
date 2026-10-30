@@ -32,7 +32,7 @@ func TestREADMERequiredContent(t *testing.T) {
 		},
 		{
 			name: "ordered usage block",
-			want: "The command forms are:\n\n```text\nselwhy tree [--depth N] DOC\nselwhy select SELECTOR DOC\nselwhy explain SELECTOR DOC N\nselwhy specificity SELECTOR\nselwhy fmt SELECTOR\nselwhy nth [--count N] FORMULA\nselwhy cascade SHEET DOC\n```",
+			want: "The command forms are:\n\n```text\nselwhy tree [--depth N] DOC\nselwhy select [--limit N] SELECTOR DOC\nselwhy explain SELECTOR DOC N\nselwhy specificity SELECTOR\nselwhy fmt SELECTOR\nselwhy nth [--count N] FORMULA\nselwhy cascade SHEET DOC\n```",
 		},
 		{
 			name: "standard input and options",
